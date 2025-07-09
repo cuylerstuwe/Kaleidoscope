@@ -105,12 +105,38 @@ USE_MAGIC_COMBOS(
 
 #define Key_Star LSHIFT(Key_8)
 #define Key_Plus LSHIFT(Key_Equals)
+// Additional shifted symbol keys for the SYMBOL layer
+#define Key_Exclamation LSHIFT(Key_1)
+#define Key_At          LSHIFT(Key_2)
+#define Key_Hash        LSHIFT(Key_3)
+#define Key_Dollar      LSHIFT(Key_4)
+#define Key_Percent     LSHIFT(Key_5)
+#define Key_Caret       LSHIFT(Key_6)
+#define Key_Ampersand   LSHIFT(Key_7)
+#define Key_LeftParen   LSHIFT(Key_9)
+#define Key_RightParen  LSHIFT(Key_0)
+// Additional shifted keys for LOWER layer
+#define Key_Pipe        LSHIFT(Key_Backslash)
+#define Key_DoubleQuote LSHIFT(Key_Quote)
+#define Key_LessThan    LSHIFT(Key_Comma)
+#define Key_GreaterThan LSHIFT(Key_Period)
+#define Key_LeftCurly   LSHIFT(Key_LeftBracket)
+#define Key_RightCurly  LSHIFT(Key_RightBracket)
+#define Key_Asterisk    LSHIFT(Key_8)
+#define Key_PlusSign    LSHIFT(Key_Equals)
+// Convenience macros for combined modifiers (matching QMK style)
+#define LCA(k) LALT(LCTRL(k))   // Ctrl + Alt
+#define LSA(k) LALT(LSHIFT(k))  // Shift + Alt
+#define MEH(k) LALT(LSHIFT(LCTRL(k))) // Ctrl + Shift + Alt
 
 enum {
   QWERTY,
   LOWER,
   RAISE,
-  FUN
+  FUN,
+  NAV,
+  NUMPAD,
+  SYMBOL
 };
 
 // clang-format off
@@ -118,31 +144,31 @@ KEYMAPS(
   [QWERTY] = KEYMAP
   (
     Consumer_VolumeDecrement, Consumer_VolumeIncrement, M(MACRO_ANY), ShiftToLayer(FUN),                 Consumer_PlaySlashPause,
-    Key_Backtick,   Key_1,           Key_2,           Key_3,                   Key_4,           Key_5,           Key_6,           Key_7,           Key_8,                      Key_9,           Key_0,           Key_Minus,
-    Key_Tab,        Key_Q,           Key_W,           Key_E,                   Key_R,           Key_T,           Key_Y,           Key_U,           Key_I,                      Key_O,           Key_P,           Key_Backspace,
-    Key_Escape,     Key_A,           Key_S,           Key_D,                   Key_F,           Key_G,           Key_H,           Key_J,           Key_K,                      Key_L,           Key_Semicolon,   Key_Quote,
-    Key_LeftShift,  Key_Z,           Key_X,           Key_C,                   Key_V,           Key_B,           Key_N,           Key_M,           Key_Comma,                  Key_Period,      Key_Slash,       Key_Enter,
-    Key_Hyper,      Key_LeftControl, Key_LeftAlt,     Key_LeftGui,            ShiftToLayer(LOWER),       Key_Backspace,   Key_Space,       ShiftToLayer(RAISE),       Key_LeftArrow,             Key_DownArrow,   Key_UpArrow,     Key_RightArrow
+    Key_F1, Key_F2, Key_F3, Key_F4, Key_F5, Key_F6, Key_F7, Key_F8, Key_F9, Key_F10, Key_F11, Key_F12,
+    LT(NUMPAD, Tab),Key_Q,           Key_W,           Key_E,                   Key_R,           Key_T,           Key_Y,           Key_U,           Key_I,                      Key_O,           Key_P,           Key_Backspace,
+    CTL_T(Escape),  Key_A,           Key_S,           Key_D,                   Key_F,           Key_G,           Key_H,           Key_J,           Key_K,                      Key_L,           LT(NAV, Semicolon),   CTL_T(Enter),
+    Key_LeftShift,  Key_Z,           Key_X,           Key_C,                   Key_V,           Key_B,           Key_N,           Key_M,           Key_Comma,                  Key_Period,      Key_Slash,       Key_RightShift,
+    ShiftToLayer(SYMBOL), ShiftToLayer(RAISE), Key_LeftAlt,     Key_LeftGui,            ShiftToLayer(LOWER),       Key_Space,   Key_Space,       ShiftToLayer(LOWER),       Key_RightGui,             Key_RightAlt,   ShiftToLayer(RAISE),     ShiftToLayer(SYMBOL)
   ),
 
   [LOWER] = KEYMAP
   (
-   ___, ___,  ___,            ___,             ___,
-    ___,            ___,             ___,             ___,             ___,             ___,             ___,             ___,             Key_Slash,      Key_Star,        Key_Minus,       Key_Equals,
-    ___,            ___,             ___,             ___,             ___,             ___,             ___,             Key_7,           Key_8,          Key_9,           Key_Minus,       ___,
-    ___,            ___,             ___,             ___,             ___,             ___,             ___,             Key_4,           Key_5,          Key_6,           Key_Plus,        ___,
-    ___,            ___,             ___,             ___,             ___,             ___,             ___,             Key_1,           Key_2,          Key_3,           Key_Plus,        ___,
-    ___,            ___,             ___,             ___,             ___,             ___,             Key_Backspace,   Key_0,           Key_Period,     ___,             Key_Enter,       ___
+    ___, ___,  ___,            ___,             ___,
+    ___,            ___,             ___,            ___,             ___,             ___,             ___,             ___,             ___,             ___,             ___,             ___,
+    ___,            Key_Ampersand,   Key_Pipe,       Key_DoubleQuote, Key_Backtick,    Key_Exclamation, Key_Exclamation, Key_Quote,      Key_DoubleQuote, Key_Pipe,        Key_Ampersand,   ___,
+    ___,            Key_LessThan,    Key_LeftCurly,  Key_LeftParen,   Key_LeftBracket, Key_Equals,      Key_Equals,      Key_RightBracket,Key_RightParen,  Key_RightCurly,  Key_GreaterThan, ___,
+    ___,            Key_Minus,       Key_PlusSign,   Key_Slash,       Key_Asterisk,    Key_Backslash,   Key_Backslash,   Key_Asterisk,    Key_Slash,       Key_PlusSign,    Key_Minus,       ___,
+    ___,            ___,             ___,            ___,             ___,             Key_Spacebar,    Key_Backspace,   ___,             ___,             ___,             ___,            ___
   ),
 
   [RAISE] = KEYMAP
   (
       ___, ___,  ___,            ___,             ___,
-    Key_Escape,     Key_F1,          Key_F2,          Key_F3,                 Key_F4,          Key_F5,          Key_F6,          Key_F7,          Key_F8,                     Key_F9,          Key_F10,         Key_Backspace,
-    Key_Backtick,   ___,             Key_mouseUp,     ___,                    Key_mouseWarpNW, Key_mouseWarpNE, Key_Backslash,   LSHIFT(Key_LeftBracket), LSHIFT(Key_RightBracket), Key_LeftBracket, Key_RightBracket, Key_Delete,
-    Key_CapsLock,   Key_mouseL,      Key_mouseDn,     Key_mouseR,             Key_mouseWarpSW, Key_mouseWarpSE, Key_LeftArrow,   Key_DownArrow,   Key_UpArrow,                Key_RightArrow,  ___,             ___,
-    ___,            Key_mouseBtnL,   Key_mouseBtnM,   Key_mouseBtnR,          ___,             Key_mouseWarpEnd,___,             ___,             ___,                        ___,             ___,             ___,
-    ___,            ___,             Key_RightAlt,    ___,                    ___,             ___,             ___,             ___,             ___,                        ___,             ___,             ___
+      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+      ___, ___, LGUI(Key_F17), LGUI(Key_F18), LGUI(Key_F19), LSHIFT(Key_F17), LSHIFT(Key_F18), LGUI(Key_F17), LGUI(Key_F18), LGUI(Key_F19), ___, ___,
+      ___, LSA(Key_F17),  LCA(Key_F17), LCA(Key_F18), LCA(Key_F19), LSHIFT(Key_F19), LSHIFT(Key_F13), LCA(Key_F17), LCA(Key_F18), LCA(Key_F19), LSA(Key_F18), ___,
+      LCTRL(Key_F17), LCTRL(Key_F18), LCTRL(Key_F19), LCTRL(Key_F13), Key_F17, Key_F18, Key_F19, Key_F13, LALT(Key_F17), LALT(Key_F18), LALT(Key_F19), LALT(Key_F13),
+      ___, ___, ___, ___, ___, MEH(Key_F17), MEH(Key_F17), ___, ___, ___, ___, ___
   ),
 
   [FUN] = KEYMAP
@@ -153,6 +179,36 @@ KEYMAPS(
     ___,            Consumer_ScanPreviousTrack,Consumer_VolumeDecrement,Consumer_ScanNextTrack,___,             ___,             ___,             ___,             ___,                        ___,             ___,             ___,
     Key_ToggleKeyclick,___,             Consumer_Mute,   ___,                    ___,             ___,             ___,             ___,             ___,                        ___,             ___,             ___,
     M(MACRO_BATTERY_LEVEL), ___,        ___,             ___,                    ___,             ___,             ___,             ___,             ___,                        ___,             ___,              ___
+  ),
+
+  [NAV] = KEYMAP
+  (
+      ___, ___, ___, ___, ___,
+      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+      ___, ___, Key_Home, Key_PageUp, Key_PageDown, Key_End, Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___, ___,
+      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___
+  ),
+
+  [NUMPAD] = KEYMAP
+  (
+      ___, ___, ___, ___, ___,
+      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+      ___, ___, ___, ___, ___, ___, Key_KeypadNumLock, Key_Keypad7, Key_Keypad8, Key_Keypad9, Key_KeypadAdd, Key_KeypadDivide,
+      ___, ___, ___, ___, ___, ___, ___, Key_Keypad4, Key_Keypad5, Key_Keypad6, Key_KeypadAdd, Key_KeypadMultiply,
+      ___, ___, ___, ___, ___, ___, ___, Key_Keypad1, Key_Keypad2, Key_Keypad3, Key_KeypadEnter, Key_KeypadSubtract,
+      ___, ___, ___, ___, ___, ___, ___, Key_Keypad0, Key_Keypad0, Key_KeypadDot, Key_KeypadEnter, Key_Mute
+  ),
+
+  [SYMBOL] = KEYMAP
+  (
+      ___, ___, ___, ___, ___,
+      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+      ___, Key_Exclamation, Key_At, Key_Hash, Key_Dollar, Key_Percent, Key_Caret, Key_Ampersand, Key_Star, Key_LeftParen, Key_RightParen, ___,
+      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___
   )
 );
 
