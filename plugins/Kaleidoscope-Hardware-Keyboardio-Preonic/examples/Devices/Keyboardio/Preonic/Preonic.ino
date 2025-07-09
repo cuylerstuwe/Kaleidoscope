@@ -145,7 +145,7 @@ KEYMAPS(
   (
     Consumer_VolumeDecrement, Consumer_VolumeIncrement, M(MACRO_ANY), ShiftToLayer(FUN),                 Consumer_PlaySlashPause,
     Key_F1, Key_F2, Key_F3, Key_F4, Key_F5, Key_F6, Key_F7, Key_F8, Key_F9, Key_F10, Key_F11, Key_F12,
-    LT(NUMPAD, Tab),Key_Q,           Key_W,           Key_E,                   Key_R,           Key_T,           Key_Y,           Key_U,           Key_I,                      Key_O,           Key_P,           Key_Backspace,
+    LT(NUMPAD, Tab),Key_Q,           Key_W,           Key_E,                   Key_R,           Key_T,           Key_Y,           Key_U,           Key_I,                      Key_O,           Key_P,           Key_Minus,
     CTL_T(Escape),  Key_A,           Key_S,           Key_D,                   Key_F,           Key_G,           Key_H,           Key_J,           Key_K,                      Key_L,           LT(NAV, Semicolon),   CTL_T(Enter),
     Key_LeftShift,  Key_Z,           Key_X,           Key_C,                   Key_V,           Key_B,           Key_N,           Key_M,           Key_Comma,                  Key_Period,      Key_Slash,       Key_RightShift,
     ShiftToLayer(SYMBOL), ShiftToLayer(RAISE), Key_LeftAlt,     Key_LeftGui,            ShiftToLayer(LOWER),       Key_Space,   Key_Space,       ShiftToLayer(LOWER),       Key_RightGui,             Key_RightAlt,   ShiftToLayer(RAISE),     ShiftToLayer(SYMBOL)
