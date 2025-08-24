@@ -86,12 +86,18 @@ enum {
   MACRO_BATTERY_LEVEL  // Report current battery level
 };
 
-// Define our magic combo
+// Define our magic combos
 enum {
-  COMBO_ENTER_TEST_MODE
+  COMBO_ENTER_TEST_MODE,
+  COMBO_HYPER_B
 };
 
-// Configure the magic combo
+// Helper to trigger Hyper+B exactly like the working Any key path
+static void triggerHyperB() {
+  Macros.tap(HYPER(Key_B));
+}
+
+// Configure the magic combos
 USE_MAGIC_COMBOS(
   [COMBO_ENTER_TEST_MODE] = {
     .action = [](uint8_t combo_index) {
@@ -101,6 +107,16 @@ USE_MAGIC_COMBOS(
       R1C0,  // `
       R5C0,  // Hyper
       R5C11  // Right arrow
+    }},
+  [COMBO_HYPER_B] = {
+    .action = [](uint8_t combo_index) {
+      triggerHyperB();
+    },
+    .keys = {
+      R5C4,  // Left LOWER key (bottom left thumb)
+      R5C7,  // Right LOWER key (bottom right thumb)
+      R5C0,  // Left SYMBOL key (bottom left corner)
+      R5C11  // Right SYMBOL key (bottom right corner)
     }});
 
 #define Key_Star LSHIFT(Key_8)
@@ -127,7 +143,7 @@ USE_MAGIC_COMBOS(
 // Convenience macros for combined modifiers (matching QMK style)
 #define LCA(k) LALT(LCTRL(k))   // Ctrl + Alt
 #define LSA(k) LALT(LSHIFT(k))  // Shift + Alt
-#define MEH(k) LALT(LSHIFT(LCTRL(k))) // Ctrl + Shift + Alt
+// #define MEH(k) LALT(LSHIFT(LCTRL(k))) // Ctrl + Shift + Alt - commented out to avoid redefinition warning
 
 enum {
   QWERTY,
