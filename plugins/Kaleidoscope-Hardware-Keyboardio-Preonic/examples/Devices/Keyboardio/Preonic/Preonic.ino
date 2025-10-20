@@ -119,6 +119,65 @@ USE_MAGIC_COMBOS(
       R5C11  // Right SYMBOL key (bottom right corner)
     }});
 
+// Lightweight double-tap detector for LOWER keys that does not delay layer activation
+namespace kaleidoscope {
+namespace plugin {
+
+class LowerDoubleTap : public ::kaleidoscope::Plugin {
+ public:
+  EventHandlerResult onKeyEvent(KeyEvent &event) {
+    // Only watch the physical LOWER keys: left = R5C4, right = R5C7
+    if (!((event.addr.row() == 5 && event.addr.col() == 4) ||
+          (event.addr.row() == 5 && event.addr.col() == 7)))
+      return EventHandlerResult::OK;
+
+    const uint8_t side = (event.addr.col() == 4) ? 0 : 1;  // 0 = left, 1 = right
+    uint32_t now       = millis();
+
+    if (keyToggledOn(event.state)) {
+      press_time_[side] = now;
+      return EventHandlerResult::OK;
+    }
+
+    if (keyToggledOff(event.state)) {
+      uint32_t press_duration = now - press_time_[side];
+      // Treat as a tap only if the hold was brief
+      if (press_duration <= tap_max_hold_ms_) {
+        if ((now - last_tap_time_[side]) <= double_tap_window_ms_) {
+          // Double tap detected: emit Hyper+A (left) or Hyper+C (right)
+          if (side == 0) {
+            ::Macros.tap(HYPER(Key_A));
+          } else {
+            ::Macros.tap(HYPER(Key_C));
+          }
+          // Reset the timer so a triple tap doesn't immediately retrigger
+          last_tap_time_[side] = 0;
+        } else {
+          // First tap; remember its time
+          last_tap_time_[side] = now;
+        }
+      } else {
+        // Long hold: likely used to shift to LOWER; clear tap memory
+        last_tap_time_[side] = 0;
+      }
+    }
+
+    return EventHandlerResult::OK;
+  }
+
+ private:
+  static constexpr uint16_t double_tap_window_ms_ = 300;  // time between taps
+  static constexpr uint16_t tap_max_hold_ms_      = 250;  // max press to count as tap
+  uint32_t last_tap_time_[2]                      = {0, 0};
+  uint32_t press_time_[2]                         = {0, 0};
+};
+
+}  // namespace plugin
+}  // namespace kaleidoscope
+
+// Instantiate the plugin object
+kaleidoscope::plugin::LowerDoubleTap LowerDoubleTap;
+
 #define Key_Star LSHIFT(Key_8)
 #define Key_Plus LSHIFT(Key_Equals)
 // Additional shifted symbol keys for the SYMBOL layer
@@ -351,6 +410,9 @@ KALEIDOSCOPE_INIT_PLUGINS(
   // The MagicCombo plugin lets you use key combinations to trigger custom
   // actions - a bit like Macros, but triggered by pressing multiple keys at the same time.
   MagicCombo,
+
+  // Custom: double-tap on LOWER keys -> Hyper+A / Hyper+C
+  LowerDoubleTap,
 
   // LEDControl provides support for other LED modes
   LEDControl,
